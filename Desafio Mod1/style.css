@@ -1,0 +1,15 @@
+#users {
+    display: inline-block;
+}
+#statistics {
+    display: inline-block;
+}
+
+div {
+    padding: 10px;
+}
+
+img {
+    border-radius: 50%;
+    width: 50px;
+}
