@@ -3,10 +3,11 @@ let globalInputName = '';
 let globalButton = '';
 let globalSearchedUser = '';
 let globalFilteredUsers = [];
+let globalNumberUsersFind = 0;
 
 window.addEventListener('load', () => {
     globalInputName = document.querySelector('#name');
-    globalButton = document.querySelector('#search');
+    globalButton = document.querySelector('.btn');
     dataGet();
     activateInput();
 });
@@ -35,6 +36,17 @@ function activateInput() {
 
 function handleButtonClick(event) {
     globalSearchedUser = event.path[1].childNodes[1].value;
+    processInput();
+}
+
+function handleTyping(event) {
+    if (event.key === 'Enter') {
+        globalSearchedUser = event.target.value;
+        processInput();
+    }
+}
+
+function processInput() {
     if (globalSearchedUser.trim() !== '') {
         userSearch();
     } else {
@@ -43,64 +55,50 @@ function handleButtonClick(event) {
     clearInput();
 }
 
-function handleTyping(event) {
-    if (event.key === 'Enter') {
-        globalSearchedUser = event.target.value;
-        if (globalSearchedUser.trim() !== '') {
-            userSearch();
-        } else {
-            renderEmpty();
-        }
-        clearInput();
-    }
-}
-
 function userSearch() {
     globalFilteredUsers = globalAllUsers.filter((user) =>
         user.name.toLowerCase().includes(globalSearchedUser)
     );
-
     if (globalFilteredUsers.length === 0) {
         renderEmpty();
     } else {
         renderSearched();
+        renderStatistics();
     }
 }
 
 function renderEmpty() {
-    let resHTML = `<h2>Nenhum usuário a ser exibido</h2>`;
-    title.innerHTML = resHTML;
-    clearInput();
+    users.innerHTML = '<h2>Nenhum usuário encontrado</h2>';
+    statistics.innerHTML = '<h2>Nada a ser exibido</h2>';
 }
 
 function renderSearched() {
-    let resHTML = '<div id="usersList">';
+    globalNumberUsersFind = globalFilteredUsers.length;
+    let resHTML = `<h2>${globalNumberUsersFind} Usuario(s) Encontrado(s)</h2>
+                    <ul>`;
     globalFilteredUsers.forEach((user) => {
         const { name, picture, age, gender } = user;
         let personHTML = `
-            <img src="${picture}" alt="${name}" />
-            <span>${name} ${age}</span>`;
+            <li>
+                <img src="${picture}" alt="${name}" />
+                <span>${name} ${age}</span>
+            </li>`;
 
         resHTML += personHTML;
     });
-    resHTML += '</div>';
+    resHTML += '</ul>';
     users.innerHTML = resHTML;
-    renderStatistics();
 }
 
 function renderStatistics() {
-    const numberUsers = globalFilteredUsers.length;
     let male = 0;
     let female = 0;
-
-    let resHTML = `<h2>${numberUsers} Usuario(s) Encontrado(s)</h2>`;
-    title.innerHTML = resHTML;
 
     const sumAge = globalFilteredUsers.reduce((accumulator, current) => {
         return accumulator + current.age;
     }, 0);
 
-    const avaregeAge = sumAge / numberUsers;
+    const avaregeAge = (sumAge / globalNumberUsersFind).toFixed(2);
 
     globalFilteredUsers.forEach((person) => {
         if (person.gender === 'male') {
@@ -111,16 +109,14 @@ function renderStatistics() {
     });
 
     resHTML = `
-        <div id="usersStatistics">
-            
-            <ul><h3>Estatíticas</h3>
+            <h2>Estatíticas</h2>
+            <ul>
                 <li>Sexo Masculino: ${male}</li>
                 <li>Sexo Feminino: ${female}</li>
                 <li>Soma das Idades: ${sumAge}</li>
                 <li>Media das idades: ${avaregeAge}</li>
             </ul>
         </div>`;
-
     statistics.innerHTML = resHTML;
 }
 

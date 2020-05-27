@@ -3,20 +3,23 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
+        />
         <link rel="stylesheet" href="./style.css" />
         <title>Desafio Mod1</title>
     </head>
     <body>
         <div>
             <h1>Pesquisa de Usuarios</h1>
-            <div>
+            <div id="title">
                 <input type="text" id="name" placeholder="Digite um nome" />
-                <button id="search">Buscar</button>
+                <a class="waves-effect waves-light btn">Buscar</a>
             </div>
         </div>
 
         <div id="container">
-            <div id="title"></div>
             <div id="users"></div>
             <div id="statistics"></div>
         </div>

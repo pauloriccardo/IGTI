@@ -1,15 +1,27 @@
-#users {
-    display: inline-block;
-}
-#statistics {
-    display: inline-block;
+#container {
+    display: flex;
 }
 
-div {
+#title {
+    display: flex;
+    padding: 10px;
+}
+#users {
+    width: 600px;
+    margin: 10px;
+    padding: 10px;
+}
+
+#statistics {
+    width: 300px;
+    margin: 10px;
     padding: 10px;
 }
 
 img {
     border-radius: 50%;
-    width: 50px;
+}
+
+h1 {
+    text-align: center;
 }
